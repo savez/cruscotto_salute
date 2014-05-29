@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" class="ng-app" lang="it" id="ng-app" ng-app="cruscotto_salute">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Controllo della salute</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="http://codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="js/utility.js"></script>
+    <script src="js/app.js"></script>
+     <!--[if lte IE 8]>
+     <script src="http://bestiejs.github.io/json3/lib/json3.js"></script>
+      <link rel="stylesheet" href="http://www.claystreet.com/sites/claystreet/dev/bootstrap/iebutton-fix/css/bootstrap-ie8buttonfix.css">
+       <script>
+        document.createElement('ng-include');
+        document.createElement('ng-pluralize');
+        document.createElement('ng-view');
+        document.createElement('ng:include');
+        document.createElement('ng:pluralize');
+        document.createElement('ng:view');
+      </script>     
+    <![endif]-->
+    <link rel="apple-touch-icon" href="icon/touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icon/touch-icon-72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="icon/touch-icon-114.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icon/touch-icon-144.png" />
+    <link rel="icon" href="icon/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="icon/favicon.ico" type="image/x-icon"/>
+
+    <!-- Le styles -->
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <!--[if IE 7]>
+      <link rel="stylesheet" href="css/font-awesome-ie7.min.css">
+      <link rel="stylesheet" href="http://www.claystreet.com/sites/claystreet/dev/bootstrap/iebutton-fix/css/bootstrap-ie7buttonfix.css">
+    <![endif]-->
+    <style type="text/css">
+    body {
+       padding-bottom: 10px;
+	     background-color: #e6e6e6;
+	     background-image: url("img/sfondo4.jpg");
+	     background-position: left;
+	     background-repeat: repeat-y;
+    }
+
+    .color-cmsa{
+      color: #AA0032;
+    }
+
+    /* Custom container */
+    .container-narrow {
+      margin: 0 auto;
+      max-width: 700px;
+    }
+    .container-narrow > hr {
+      margin: 30px 0;
+    }
+
+    /* Main marketing message and sign up button */
+    jumbotron {
+      margin: 30px 0;
+      text-align: center;
+    }
+    .jumbotron h1 {
+      font-size: 72px;
+      line-height: 1;
+    }
+    .jumbotron .btn {
+      font-size: 21px;
+      padding: 14px 24px;
+    }
+
+    /* Supporting marketing content */
+    .marketing {
+      margin: 60px 0;
+    }
+    .marketing p + h4 {
+      margin-top: 28px;
+    }
+	  
+	#femmina_btn>.text-info {
+	color: #ee6b9c;
+	}
+
+    .valore-select-ok{
+       color:#049E01;
+    }
+    .valore-select-alert{
+        color:#B20603;
+    }
+
+    .okbmi{
+      background-color: #DFF0D8;
+      border-color: #D6E9C6;
+      color: #468847;
+    }
+    .okbmi h4{
+      color: #468847;
+    }
+
+    .nobmi{
+      background-color: #F2DEDE;
+      border-color: #EED3D7;
+      color: #B94A48;
+    }
+    .nobmi h4{
+      color: #B94A48;
+    }
+	  
+	.alert {
+	max-width: 300px;
+	margin: 0 auto;
+	}
+	  
+	.lead {
+	font-size: 16px;
+    font-weight: 200;
+    line-height: 0px;
+	}
+	
+	.container-fluid {
+	padding: 0;
+	}
+    </style>
+    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="assets/html5shiv.js"></script>
+    <![endif]-->
+
+</head>
+
+  <body ng-controller="CruscottoSaluteCtrl">
+      <!--[if lte IE 7]>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="alert alert-warning">
+            <p class="text-center">La versione del tuo browser &egrave; obsoleta.<br/>Scarica o utilizza <strong><a href="http://www.mozilla.org/it/firefox/new/" target="_blank">Firefox</a></strong> o <strong><a href="https://www.google.com/intl/it/chrome/browser/" target="_blank">Chrome</strong></a>.</p>
+          </div>
+        </div>
+      </div>
+    <![endif]-->
+    <div class="container-narrow">
+	  <div class="masthead">
+        <h2 class="text-center color-cmsa">Crusc<i class="icon-heart"></i>tto della salute</h2>
+      </div>
+      <div class="jumbotron">
+        <p class="lead text-info text-center"><strong>Verifica il tuo stato di salute!</strong></p>
+		<p class="text-info text-center"><small><em>Compila i campi con i tuoi dati e con gli esami del sangue recenti (non più vecchi di un anno) sotto mano.</em></small></p>
+      </div>
+      <form name="form" class="form" ng-submit="calculateDate(dati)" novalidate ng-show="risultato == ''" ng-init="risultato = ''">
+        <fieldset>
+          <div class="row-fluid">
+            <div class="span12 text-center">
+              <div class="control-group">
+                <label class="control-label"></label>
+                <div class="controls">
+                  <input ng-model="dati.sesso" type="hidden" name="sesso" id="sesso" value="maschio" />
+                  <div class="btn-group" data-toggle="buttons-radio">
+                    <button id="maschio_btn" type="button" class="btn active"><i class="text-info icon-male icon-2x"></i></button>
+                    <button id="femmina_btn" type="button" class="btn"><i class="icon-female icon-2x"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span6">
+                <div class="control-group" ng-class="{error: (form.altezza.$error.required || form.altezza.$error.number || form.altezza.$error) && form.altezza.$pristine == false, success: form.altezza.$valid}">
+                  <label class="control-label">Altezza (cm) </label>
+                  <div class="controls">
+                    <div class="input">
+                      <input max="230" min="120" ng-maxlength="3" ng-model="dati.altezza" class="input-span6" type="number" name="altezza" id="altezza" required />
+                    </div>
+                  </div>
+                </div>
+                <span ng-hide="form.altezza.$valid ||  form.altezza.$pristine" class="help-inline"><em><small><p class="text-info"><i class="icon icon-info"></i> Compilare correttamente l'altezza range valori [120 - 230]</p></small></em></span>
+              </div>
+              <div class="span6">
+                <div class="control-group" ng-class="{error: (form.peso.$error.required || form.peso.$error.number || form.peso.$error) && form.peso.$pristine == false, success: form.peso.$valid}">
+                  <label class="control-label">Peso (kg) </label>
+                  <div class="controls">
+                    <div class="input">
+                      <input max="250" min="35" ng-maxlength="3"  ng-model="dati.peso" class="input-span6" type="number" name="peso" id="peso" required />
+                    </div>
+                  </div>
+                </div>
+                <span ng-hide="form.peso.$valid ||  form.peso.$pristine" class="help-inline"><em><small><p class="text-info"><i class="icon icon-info"></i> Compilare correttamente il range valori [35 - 250]</p></small></em></span>
+              </div>
+            </div>
+          </div>
+          <span class="hide">{{bmi = dati.peso/[(dati.altezza/100)*(dati.altezza/100)] | number:2}}</span>
+          <span ng-show="form.peso.$valid && form.altezza.$valid"><div class="alert ng-class: {okbmi: (bmi < 25) , nobmi: bmi >= 25 }"><h4 class="text-center">Il tuo BMI è {{bmi | number:2}}</h4><br/><h4 class="text-center" ng-show="bmi <= 25"> <i class="icon icon-thumbs-up-alt"></i> OTTIMO!</h4><h4 class="text-center" ng-show="bmi > 25"><i class="icon icon-thumbs-down-alt"></i> SEI SOVRAPPESO</h4>
+
+		  <p class="text-center"><small>L'indice di massa corporea (abbreviato IMC o BMI, dall'inglese body mass index) è un dato biometrico, espresso come rapporto tra peso e altezza di un individuo ed è utilizzato come un indicatore dello stato di peso forma.</small></p></div></span>
+          <hr>
+
+          <div class="row-fluid">
+            <div class="span6">
+              <div class="control-group" ng-class="{error: (form.pa_max.$error.required || form.pa_max.$error.number || form.pa_max.$error) && form.pa_max.$pristine == false, success: form.pa_max.$valid}">
+                <label class="control-label">Pressione massima (mmHg)</label>
+                <div class="controls">
+                    <select ng-model="dati.pa_max" class="input-block-level" name="pa_max" id="pa_max" required>
+                      <option class="valore-select-alert" value="141"> maggiore di 140</option>
+                      <option class="valore-select-ok" value="140"> fino a 140</option>
+                    </select>
+                </div>
+              </div>
+              <span ng-hide="form.pa_max.$valid ||  form.pa_max.$pristine" class="help-inline"><em><small><p class="text-info"><i class="icon icon-info"></i> Compilare correttamente la Pressione arteriosa MAX</p></small></em></span>
+
+              <div class="control-group" ng-class="{error: (form.cho.$error.required || form.cho.$error.number || form.cho.$error) && form.cho.$pristine == false, success: form.cho.$valid}">
+                <label class="control-label">Colesterolo totale (mg/dL)</label>
+                <div class="controls">
+					<div class="input">
+                      <input min="0" ng-maxlength="3" ng-model="dati.cho" class="input-span6" type="number" name="cho" id="cho" required />
+                    </div>
+                </div>
+              </div>
+              <span ng-hide="form.cho.$valid ||  form.cho.$pristine" class="help-inline"><em><small><p class="text-info"><i class="icon icon-info"></i> Compilare correttamente il Colesterolo totale</p></small></em></span>
+
+			  <div class="control-group" ng-class="{error: (form.tg.$error.required || form.tg.$error.number || form.tg.$error) && form.tg.$pristine == false, success: form.tg.$valid}">
+                <label class="control-label">Trigliceridi (mg/dL)</label>
+                <div class="controls">
+                    <select ng-model="dati.tg" class="input-block-level" name="tg" id="tg" required>
+                      <option class="valore-select-alert" value="201"> maggiore di 200</option>
+                      <option class="valore-select-ok" value="200"> fino a 200</option>
+                    </select>
+                </div>
+              </div>
+              <span ng-hide="form.tg.$valid ||  form.tg.$pristine" class="help-inline"><em><small><p class="text-info"><i class="icon icon-info"></i> Compilare correttamente il campo Trigliceridi</p></small></em></span>
+
+            </div>
+            <div class="span6">
+               <div class="control-group" ng-class="{error: (form.pa_min.$error.required || form.pa_min.$error.number || form.pa_min.$error) && form.pa_min.$pristine == false, success: form.pa_min.$valid}">
+                <label class="control-label">Pressione minima (mmHg)</label>
+                <div class="controls">
+                    <select ng-model="dati.pa_min" class="input-block-level" name="pa_min" id="pa_min" required>
+                      <option class="valore-select-alert" value="86"> maggiore di 85</option>
+                      <option class="valore-select-ok" value="85"> fino a 85</option>
+                    </select>
+                </div>
+              </div>
+              <span ng-hide="form.pa_min.$valid ||  form.pa_min.$pristine" class="help-inline"><em><small><p class="text-info"><i class="icon icon-info"></i> Compilare correttamente la Pressione arteriosa MIN</p></small></em></span>
+
+			  <div class="control-group" ng-class="{error: (form.hdl.$error.required || form.hdl.$error.number || form.hdl.$error) && form.hdl.$pristine == false, success: form.hdl.$valid}">
+                <label class="control-label">Colesterolo HDL (mg/dL)</label>
+                <div class="controls">
+				  <div class="input">
+                    <input min="0" ng-maxlength="3" ng-model="dati.hdl" class="input-span6" type="number" name="hdl" id="hdl" required />
+                  </div>
+                </div>
+              </div>
+              <span ng-hide="form.hdl.$valid ||  form.hdl.$pristine" class="help-inline"><em><small><p class="text-info"><i class="icon icon-info"></i> Compilare correttamente il campo Colesterolo HDL</p></small></em></span>
+		  
+			  <div class="control-group" ng-class="{error: (form.glic.$error.required || form.glic.$error.number || form.glic.$error) && form.glic.$pristine == false, success: form.glic.$valid}">
+                <label class="control-label">Glicemia (mg/dL)</label>
+                <div class="controls">
+                    <select ng-model="dati.glic" class="input-block-level" name="glic" id="glic" required>
+                      <option class="valore-select-alert" value="121"> maggiore di 120</option>
+                      <option class="valore-select-ok" value="120"> fino a 120</option>
+                    </select>
+                </div>
+              </div>
+              <span ng-hide="form.glic.$valid ||  form.glic.$pristine" class="help-inline"><em><small><p class="text-info"><i class="icon icon-info"></i> Compilare correttamente il campo Glicemia</p></small></em></span>
+            </div>
+          </div>
+        </fieldset>
+        <h3 class="color-cmsa text-center"><strong><i class="icon icon-warning-sign"></i> Compilare tutti i campi!</strong></h3>
+        <div style="max-width: 300px; margin: 20px auto;">
+          <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary btn-large">Calcola il tuo stato di salute &nbsp; &nbsp;<i class="icon  icon-angle-right"></i></button>
+        </div>
+      </form>
+      <div style="margin-top=20px;" class="row-fluid well" ng-show="risultato">
+        <h3 class="text-center text-{{risultato.stato}}" ng-bind-html-unsafe="risultato.titolo"></h3>
+        <span class="" >
+        <div class="row-fluid">
+          <div class="span3">
+            <i ng-show="risultato.icona!=''" style="vertical-align: middle;" class="text-{{risultato.stato}} icon {{risultato.icona}} icon-3x"></i>
+          </div>
+          <div class="span9">
+            <div ng-bind-html-unsafe="risultato.messaggio"></div>
+          </div>
+        </div>
+        <div><br/><br/>
+          <h4 class="muted text-center"><em>Parlane con il tuo medico di fiducia.</em></h4><br/>
+        <span class="btn btn-primary btn-small" ng-click="resetta()"> Rifai il test <i class="icon-repeat"></i></span>
+      </div>
+        </span>
+        <br/>
+      </div>
+    </div> <!-- /container -->
+
+<!-- Modale per risultato
+<div class="modal" id="MyModal_risulato" ng-hide="!risultato || showDetails">
+  <div class="modal-header">
+  <a class="close" href="#" ng-click="chiudiModale()"><i class="icon icon-remove"></i></a>
+  <h3 class="text-center text-{{risultato.stato}}" ng-bind-html-unsafe="risultato.titolo"></h3>
+  </div>
+  <div class="modal-body">
+    <span class="text-center" >
+      <div class="row-fluid">
+	    <div class="span3">
+		  <i ng-show="risultato.icona!=''" style="vertical-align: middle;" class="text-{{risultato.stato}} icon {{risultato.icona}} icon-3x"></i>
+        </div>
+		<div class="span9">
+		  <div ng-bind-html-unsafe="risultato.messaggio"></div>
+        </div>
+	  </div>
+    </span>
+  </div>
+  <div class="modal-footer">
+   <small class="muted">Parlane con il tuo medico di fiducia.</small>
+  </div>
+</div>
+ ./Modale per risultato -->
+
+
+</body></html>
