@@ -1,0 +1,14 @@
+{
+    "name" : "savez/cruscotto_salute",
+    "description" : "WebApp for the clinical health",
+    "type" : "library",
+    "homepage" : "http://www.github.com/coogle/Logger",
+    "authors" : [
+      {
+        "name" : "Saverio Menin",
+        "email" : "saverio.menin@gmail.com"
+      }
+    ]
+	]
+    }
+}
